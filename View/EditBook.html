@@ -1,0 +1,35 @@
+<html>
+<head>
+</head>
+<body>
+
+<form method="post" action="/edit/EditBook">
+
+    <table>
+        <tr>
+            <td>图书编号</td>
+            <td><input type="text" readonly="readonly" name="tableid" value="{{.TableID}}"></input></td>
+        </tr>
+    	<tr>
+    		<td>图书编码</td>
+    		<td><input type="text" name="code" value="{{.BookCode}}"></input></td>
+    	</tr>
+    	<tr>
+    		<td>图书名称</td>
+    		<td><input type="text" name="name" value="{{.BookName}}"></input></td>
+    	</tr>
+    	<!--<tr>
+    		<td>添加者ID</td>
+    		<td><input type="text" name="userid" value="{{.UserID}}"></input></td>
+    	</tr>-->
+    	<tr>
+    		<td></td>
+    		<td>
+    			<input type="submit" name="btnEditBook" value="- 修改 -"></input>
+    		</td>
+    	</tr>
+    </table>
+
+</form>
+</body>
+</html>
