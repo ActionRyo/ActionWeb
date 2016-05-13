@@ -50,6 +50,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 				//http.SetCookie(w, &cookie)
 
 				http.Redirect(w, r, "/home/main", http.StatusFound)
+				return
 			}
 
 		} else {
@@ -67,11 +68,13 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	defer sess.SessionRelease(w)
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	uacc := sess.Get("UserID")
 	if uacc == nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	sess.Delete("UserID")
@@ -97,6 +100,7 @@ func registHandler(w http.ResponseWriter, r *http.Request) {
 			addInt = Dal.AddUser(regAcc, regPwd)
 			if addInt == 1 {
 				http.Redirect(w, r, "/login/login", http.StatusFound)
+				return
 			}
 			if addInt == 0 {
 				w.Write([]byte("已经存在相同的账户名"))
@@ -120,11 +124,13 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := globalSessions.SessionStart(w, r)
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	uacc := sess.Get("UserID")
 	if uacc == nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	var lstBooks []*Entity.BookInfo
@@ -149,11 +155,13 @@ func addBookHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	uacc := sess.Get("UserID")
 	if uacc == nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	if r.Method == "POST" {
@@ -170,6 +178,7 @@ func addBookHandler(w http.ResponseWriter, r *http.Request) {
 			addInt = Dal.AddBook(book)
 			if addInt > 0 {
 				http.Redirect(w, r, "/home/main", http.StatusFound)
+				return
 			}
 
 			if addInt == 0 {
@@ -194,11 +203,13 @@ func editBookHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := globalSessions.SessionStart(w, r)
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	uacc := sess.Get("UserID")
 	if uacc == nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	r.ParseForm()
@@ -238,6 +249,7 @@ func editBookHandler(w http.ResponseWriter, r *http.Request) {
 			addInt = Dal.UpdateBook(books)
 			if addInt == 1 {
 				http.Redirect(w, r, "/home/main", http.StatusFound)
+				return
 			}
 			if addInt == 0 {
 				w.Write([]byte("不存在书本信息"))
@@ -274,6 +286,7 @@ func delBookHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := globalSessions.SessionStart(w, r)
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
+		return
 	}
 
 	uacc := sess.Get("UserID")
@@ -297,6 +310,7 @@ func delBookHandler(w http.ResponseWriter, r *http.Request) {
 
 	if delInt == 1 {
 		http.Redirect(w, r, "/home/main", http.StatusFound)
+		return
 	} else {
 		w.Write([]byte("删除失败"))
 		return
