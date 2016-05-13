@@ -227,7 +227,7 @@ func UpdateBook(book Entity.BookInfo) int {
 		return 909
 	}
 
-	var sqlCmd = "update bookinfo a set a.bookcode=?,a.bookname=?,a.userid=? where a.tableid = ?"
+	var sqlCmd = "update bookinfo a set a.bookcode=?,a.bookname=?,a,userid=? where a.tableid = ?"
 	result, errOper := db.Prepare(sqlCmd)
 	if errOper != nil {
 		fmt.Println(errOper.Error())

@@ -64,6 +64,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 // 注销
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := globalSessions.SessionStart(w, r)
+	defer sess.SessionRelease(w)
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
 	}
@@ -145,6 +146,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 // 添加书本信息
 func addBookHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := globalSessions.SessionStart(w, r)
+
 	if err != nil {
 		http.Redirect(w, r, "/login/login", http.StatusFound)
 	}
@@ -226,6 +228,10 @@ func editBookHandler(w http.ResponseWriter, r *http.Request) {
 		books.BookCode = r.FormValue("code")
 		books.BookName = r.FormValue("name")
 		books.UserID, _ = uacc.(int)
+		if books.UserID == 0 {
+			http.Redirect(w, r, "/login/login", http.StatusFound)
+			return
+		}
 		if books.BookCode != "" && books.BookName != "" {
 
 			var addInt int
